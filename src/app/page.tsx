@@ -38,15 +38,20 @@ export default function Home() {
           <div className="container mx-auto">
             <div className="text-center mb-16 space-y-4">
               <h2 className="text-4xl md:text-5xl font-serif text-primary">El Círculo Íntimo</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light">Conoce a las almas que danzaron en la oscuridad. Cada una alberga un secreto indescifrable.</p>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light">
+                Actores y espect-actores en una acreditación espiritual. Cada encuentro es una provocación de la logia al sistema.
+              </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {[
-                { name: "La Sacerdotisa", role: "Voz del Ritual", desc: "Guardián de los misterios perdidos y receptáculo de los antiguos cantos. Su voz desgarra el velo entre mundos.", icon: "⚜️" },
-                { name: "El Hereje", role: "Portador de la Llama", desc: "Forjó su propio camino a través del fuego, dejando cenizas a su paso. La rebeldía es su única doctrina.", icon: "🔥" },
-                { name: "La Observadora", role: "Testigo Eterno", desc: "Silenciosa y omnipresente. Sus ojos han visto la caída del sol negro y el nacimiento de la luna de sangre.", icon: "👁️" }
+                { name: "Ninio Monje", role: "El Buscador de Verdad", desc: "Aún con la capucha gacha. Nos advierte que en el siglo XXI hemos pasado de la era del tiempo a la del espacio tiempo, y que la materia en verdad, no existe.", icon: "🌫️" },
+                { name: "Gabriel", role: "El Niño Trágico", desc: "Vestido a lo años 30. Liberó a un demonio accidentalmente digitando el código '616' en la tarjeta de crédito de sus padres para comprar una espada en su videojuego.", icon: "🕹️" },
+                { name: "Mamá & Las Purificadoras", role: "Contención Terrenal", desc: "La madre lo baja a la tierra, mientras que junto a la chola y la bruja sahúman incesantemente el ambiente en cada etapa del show para ahuyentar energías.", icon: "🌿" },
+                { name: "José Mercado", role: "El Señor de la Biyuya", desc: "Ostentoso, decide a quién le entra el billetín. Impide la libertad absoluta de los demás porque a él y a su primo 'Raúl Estado' les conviene que trabajen para ellos.", icon: "💵" },
+                { name: "El Mojigato", role: "Cooptado Tecnológico", desc: "Un esclavo moderno cargando un celular gigante, incapaz de interactuar con el mundo real, reflejo de la empresa civilizatoria que nos vuelve robots.", icon: "📱" },
+                { name: "Materio Primo & Gugú", role: "El Frenesí Final", desc: "Gugú Petite Morte trae la decadencia y Materio Primo instaura un folklore oscuro y furioso. Ellos dan lugar a que comience la verdadera y apoteósica Fiesta Pagana.", icon: "🎭" }
               ].map((char, i) => (
-                <Card key={i} className="group hover:-translate-y-2 transition-all duration-300 bg-background/50 border-border/50 hover:shadow-[0_0_30px_-5px_rgba(212,175,55,0.2)] hover:border-primary/50">
+                <Card key={i} className="group hover:-translate-y-2 transition-all duration-300 bg-background/50 border-border/50 hover:shadow-[0_0_30px_-5px_rgba(212,175,55,0.2)] hover:border-primary/50 flex flex-col">
                   <CardHeader>
                     <div className="w-14 h-14 rounded-full bg-secondary/10 border border-secondary/20 flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform">
                       {char.icon}
@@ -54,7 +59,7 @@ export default function Home() {
                     <CardTitle className="text-2xl font-serif tracking-wide group-hover:text-primary transition-colors">{char.name}</CardTitle>
                     <CardDescription className="uppercase tracking-widest text-xs text-secondary font-bold">{char.role}</CardDescription>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="flex-grow">
                     <p className="text-muted-foreground text-sm font-light leading-relaxed">{char.desc}</p>
                   </CardContent>
                 </Card>
@@ -73,18 +78,18 @@ export default function Home() {
             </div>
             <h2 className="text-4xl md:text-5xl font-serif text-primary">Textos Sagrados</h2>
             <p className="text-xl text-muted-foreground font-light">
-              Los guiones completos de La Fiesta Pagana yacen sellados. Solo los iniciados de la logia pueden posar sus ojos sobre la obra.
+              Los pergaminos de La Fiesta Pagana se encuentran protegidos. Son de conocimiento exclusivo para los espect-actores de la logia.
             </p>
             
             <div className="mt-16 p-8 md:p-12 border border-border/50 rounded-2xl bg-card/60 backdrop-blur-xl shadow-2xl relative overflow-hidden text-left group">
               <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/80 to-transparent z-10 pointer-events-none" />
               
               <div className="font-serif opacity-40 select-none space-y-6 text-lg relative z-0">
-                <p className="tracking-widest text-primary uppercase text-sm">ACTO I - EL LLAMADO</p>
-                <p className="italic text-muted-foreground">(Un escenario apenas iluminado por velas ahumadas. Entra CORO.)</p>
-                <p className="leading-relaxed">CORO: Quien busca la luz en la oscuridad absoluta, primero debe cegarse a sí mismo. Vemos a medias verdades... escuchamos himnos que ya no se cantan.</p>
-                <p className="italic text-muted-foreground">(La SACERDOTISA alza las manos. El fuego estalla.)</p>
-                <p className="leading-relaxed">SACERDOTISA: Acérquense, indignos. Hoy la tierra demandará su tribu.</p>
+                <p className="tracking-widest text-primary uppercase text-sm">PRIMER ACTO - LA VERDAD Y LA LIBERTAD</p>
+                <p className="italic text-muted-foreground">(Un anuncio misterioso. Ninio aún no se muestra, permanece con la capucha baja.)</p>
+                <p className="leading-relaxed"><strong className="font-bold">NINIO MONJE:</strong> A la búsqueda de la verdad. Asistimos hace algún tiempo todos. Nadie se había dado cuenta aún, pero en el siglo XXI pasamos de la era del tiempo a la era del espacio tiempo...</p>
+                <p className="italic text-muted-foreground">(De repente la música se corta e ingresa Gabriel a toda velocidad...)</p>
+                <p className="leading-relaxed"><strong className="font-bold">GABRIEL:</strong> Yo soy el niño que liberó al demonio. No quise hacerlo. Fue lo que se dice un accidente. Estaba yo con mi videojuego... logré tomar la tarjeta de mis padres y di con la cifra diabólica: 616...</p>
               </div>
               
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 pt-16 z-20 flex flex-col items-center">
