@@ -10,7 +10,7 @@ export async function Navbar() {
     <nav className="border-b border-border bg-background/50 backdrop-blur-md sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="font-serif text-xl font-bold tracking-widest text-primary">
-          LA LOGIA
+          PAGANOS
         </Link>
         <div className="flex items-center space-x-6">
           <Link href="/#personajes" className="text-sm font-medium hover:text-primary transition-colors">

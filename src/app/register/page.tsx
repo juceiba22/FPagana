@@ -33,7 +33,7 @@ export default function RegisterPage() {
             Sellar Pacto
           </Button>
           <div className="text-sm text-center text-muted-foreground font-light">
-            ¿Ya eres de la logia?{' '}
+            ¿Ya eres parte?{' '}
             <Link href="/login" className="text-primary hover:text-primary/80 font-medium">
               Abrir las puertas
             </Link>

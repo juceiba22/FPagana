@@ -11,8 +11,8 @@ export default function LoginPage() {
           <div className="w-12 h-12 mx-auto rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
             <LogIn className="w-6 h-6" />
           </div>
-          <CardTitle className="text-3xl font-serif text-primary">Ingresar al Círculo</CardTitle>
-          <CardDescription className="text-muted-foreground font-light mt-2">Revela tu identidad a la logia para acceder a los secretos.</CardDescription>
+          <CardTitle className="text-3xl font-serif text-primary">Ingresar al Ritual</CardTitle>
+          <CardDescription className="text-muted-foreground font-light mt-2">Revela tu identidad para acceder a los secretos.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Note: This is a placeholder form. Actual Supabase Auth action to be added later. */}

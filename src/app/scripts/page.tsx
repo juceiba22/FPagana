@@ -23,7 +23,7 @@ export default async function ScriptsPage() {
           <div>
             <h1 className="text-4xl font-serif text-primary mb-2">Archivo de Guiones</h1>
             <p className="text-muted-foreground font-light">
-              Bienvenido, {user.email}. Tienes acceso a los textos reservados de la logia.
+              Bienvenido, {user.email}. Tienes acceso a los textos reservados del ritual.
             </p>
           </div>
         </div>

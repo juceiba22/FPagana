@@ -20,14 +20,14 @@ export default function Home() {
               La Fiesta Pagana
             </h1>
             <p className="text-lg md:text-2xl text-muted-foreground font-light px-4 max-w-2xl mx-auto">
-              Un ritual inmersivo. Una logia digital. Adéntrate en las sombras y descubre lo que yace detrás del telón de la realidad.
+              Un ritual inmersivo que devela una verdad. Adéntrate en las sombras y descubre lo que yace detrás del telón de la realidad.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
               <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground text-md h-12 w-full sm:w-auto">
                 Descubrir la Verdad
               </Button>
               <Button size="lg" variant="outline" className="rounded-full px-8 text-md h-12 border-border hover:bg-secondary/10 hover:text-secondary w-full sm:w-auto" asChild>
-                <Link href="#personajes">Conocer la Logia</Link>
+                <Link href="#personajes">Quiero saber más</Link>
               </Button>
             </div>
           </div>
@@ -37,9 +37,9 @@ export default function Home() {
         <section id="personajes" className="w-full px-4 py-32 bg-card/30 border-y border-border">
           <div className="container mx-auto">
             <div className="text-center mb-16 space-y-4">
-              <h2 className="text-4xl md:text-5xl font-serif text-primary">El Círculo Íntimo</h2>
+              <h2 className="text-4xl md:text-5xl font-serif text-primary">El Ritual</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light">
-                Actores y espect-actores en una acreditación espiritual. Cada encuentro es una provocación de la logia al sistema.
+                Hazte de plata, espeja el oro de las alturas y verdaderamente serás un argentino.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -78,7 +78,7 @@ export default function Home() {
             </div>
             <h2 className="text-4xl md:text-5xl font-serif text-primary">Textos Sagrados</h2>
             <p className="text-xl text-muted-foreground font-light">
-              Los pergaminos de La Fiesta Pagana se encuentran protegidos. Son de conocimiento exclusivo para los espect-actores de la logia.
+              Los pergaminos de La Fiesta Pagana se encuentran protegidos. Son de conocimiento exclusivo para los espect-actores de esta experiencia.
             </p>
             
             <div className="mt-16 p-8 md:p-12 border border-border/50 rounded-2xl bg-card/60 backdrop-blur-xl shadow-2xl relative overflow-hidden text-left group">
