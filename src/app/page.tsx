@@ -1,65 +1,104 @@
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { MoveRight, Sparkles, ScrollText, Users } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <>
+      <div className="flex-grow flex flex-col items-center">
+        {/* Hero Section */}
+        <section className="w-full relative px-4 py-32 flex flex-col items-center justify-center text-center overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-secondary/20 via-background to-background z-0" />
+          
+          <div className="z-10 max-w-4xl space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm text-primary mb-4 backdrop-blur-sm">
+              <Sparkles className="mr-2 h-4 w-4" />
+              <span>Experimenta el Ritual</span>
+            </div>
+            <h1 className="text-5xl md:text-8xl font-bold font-serif tracking-tighter drop-shadow-lg">
+              La Fiesta Pagana
+            </h1>
+            <p className="text-lg md:text-2xl text-muted-foreground font-light px-4 max-w-2xl mx-auto">
+              Un ritual inmersivo. Una logia digital. Adéntrate en las sombras y descubre lo que yace detrás del telón de la realidad.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+              <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground text-md h-12 w-full sm:w-auto">
+                Descubrir la Verdad
+              </Button>
+              <Button size="lg" variant="outline" className="rounded-full px-8 text-md h-12 border-border hover:bg-secondary/10 hover:text-secondary w-full sm:w-auto" asChild>
+                <Link href="#personajes">Conocer la Logia</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Characters Section */}
+        <section id="personajes" className="w-full px-4 py-32 bg-card/30 border-y border-border">
+          <div className="container mx-auto">
+            <div className="text-center mb-16 space-y-4">
+              <h2 className="text-4xl md:text-5xl font-serif text-primary">El Círculo Íntimo</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light">Conoce a las almas que danzaron en la oscuridad. Cada una alberga un secreto indescifrable.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {[
+                { name: "La Sacerdotisa", role: "Voz del Ritual", desc: "Guardián de los misterios perdidos y receptáculo de los antiguos cantos. Su voz desgarra el velo entre mundos.", icon: "⚜️" },
+                { name: "El Hereje", role: "Portador de la Llama", desc: "Forjó su propio camino a través del fuego, dejando cenizas a su paso. La rebeldía es su única doctrina.", icon: "🔥" },
+                { name: "La Observadora", role: "Testigo Eterno", desc: "Silenciosa y omnipresente. Sus ojos han visto la caída del sol negro y el nacimiento de la luna de sangre.", icon: "👁️" }
+              ].map((char, i) => (
+                <Card key={i} className="group hover:-translate-y-2 transition-all duration-300 bg-background/50 border-border/50 hover:shadow-[0_0_30px_-5px_rgba(212,175,55,0.2)] hover:border-primary/50">
+                  <CardHeader>
+                    <div className="w-14 h-14 rounded-full bg-secondary/10 border border-secondary/20 flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform">
+                      {char.icon}
+                    </div>
+                    <CardTitle className="text-2xl font-serif tracking-wide group-hover:text-primary transition-colors">{char.name}</CardTitle>
+                    <CardDescription className="uppercase tracking-widest text-xs text-secondary font-bold">{char.role}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground text-sm font-light leading-relaxed">{char.desc}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Scripts Teaser Section */}
+        <section className="w-full px-4 py-32 relative overflow-hidden bg-background">
+          <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 50% 50%, var(--color-secondary) 0%, transparent 60%)" }} />
+          
+          <div className="container mx-auto max-w-4xl text-center space-y-8 relative z-10">
+            <div className="w-20 h-20 mx-auto rounded-full bg-background border border-primary/30 shadow-[0_0_20px_rgba(212,175,55,0.2)] flex items-center justify-center text-primary mb-8">
+              <ScrollText className="w-10 h-10" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-serif text-primary">Textos Sagrados</h2>
+            <p className="text-xl text-muted-foreground font-light">
+              Los guiones completos de La Fiesta Pagana yacen sellados. Solo los iniciados de la logia pueden posar sus ojos sobre la obra.
+            </p>
+            
+            <div className="mt-16 p-8 md:p-12 border border-border/50 rounded-2xl bg-card/60 backdrop-blur-xl shadow-2xl relative overflow-hidden text-left group">
+              <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/80 to-transparent z-10 pointer-events-none" />
+              
+              <div className="font-serif opacity-40 select-none space-y-6 text-lg relative z-0">
+                <p className="tracking-widest text-primary uppercase text-sm">ACTO I - EL LLAMADO</p>
+                <p className="italic text-muted-foreground">(Un escenario apenas iluminado por velas ahumadas. Entra CORO.)</p>
+                <p className="leading-relaxed">CORO: Quien busca la luz en la oscuridad absoluta, primero debe cegarse a sí mismo. Vemos a medias verdades... escuchamos himnos que ya no se cantan.</p>
+                <p className="italic text-muted-foreground">(La SACERDOTISA alza las manos. El fuego estalla.)</p>
+                <p className="leading-relaxed">SACERDOTISA: Acérquense, indignos. Hoy la tierra demandará su tribu.</p>
+              </div>
+              
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 pt-16 z-20 flex flex-col items-center">
+                <Button size="lg" className="rounded-full h-14 px-8 shadow-[0_0_40px_-5px_rgba(212,175,55,0.4)] group-hover:scale-105 transition-transform" asChild>
+                  <Link href="/register">
+                    Solicitar Acceso <MoveRight className="ml-3 w-5 h-5" />
+                  </Link>
+                </Button>
+                <p className="mt-4 text-sm text-muted-foreground">Requiere membresía en la comunidad</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </>
   );
 }
