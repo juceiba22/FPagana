@@ -15,10 +15,14 @@ export default async function ScriptsPage() {
 
   const isValidated = user.email_confirmed_at != null;
 
-  const { data: scripts } = await supabase
+  const { data: scripts, error } = await supabase
     .from('scripts')
     .select('*')
     .order('created_at', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching scripts:', error);
+  }
 
   return (
     <div className="flex-grow container mx-auto px-4 py-24">
