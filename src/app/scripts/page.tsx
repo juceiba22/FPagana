@@ -82,7 +82,7 @@ export default async function ScriptsPage() {
                 </CardContent>
                 <CardFooter>
                   {isAccessible ? (
-                    <Link href={script.content_url || '#'} className="w-full">
+                    <Link href={`/scripts/${script.id}`} className="w-full">
                       <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-[0_0_15px_-3px_rgba(212,175,55,0.4)]">
                         Leer Manuscrito
                       </Button>
