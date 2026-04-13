@@ -72,7 +72,9 @@ export default async function ScriptsPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {/* Espacio para descripciones en el futuro si se añaden */}
+                  {script.duration_text && (
+                    <p className="mt-2 text-xs text-muted-foreground/80 font-mono">Duración aprox: {script.duration_text}</p>
+                  )}
                 </CardContent>
                 <CardFooter>
                   {isAccessible ? (
@@ -83,7 +85,7 @@ export default async function ScriptsPage() {
                     </Link>
                   ) : (
                     <Button disabled className="w-full bg-secondary hover:bg-secondary border-none text-secondary-foreground opacity-50 cursor-not-allowed">
-                      Rito Incompleto
+                      Completar rito anterior
                     </Button>
                   )}
                 </CardFooter>
