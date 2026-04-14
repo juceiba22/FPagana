@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,10 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch("/scripts");
+  }, [router]);
 
   const handleLogin = async () => {
     setIsLoading(true);
