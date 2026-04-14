@@ -35,7 +35,14 @@ export async function updateSession(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/scripts') && !user) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
-    return NextResponse.redirect(url)
+    const redirectResponse = NextResponse.redirect(url)
+    
+    // Ensure cookies are passed to the redirect response
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value)
+    })
+    
+    return redirectResponse
   }
 
   // If user is logged in, restrict access to /login and /register
@@ -46,7 +53,14 @@ export async function updateSession(request: NextRequest) {
   ) {
     const url = request.nextUrl.clone()
     url.pathname = '/scripts'
-    return NextResponse.redirect(url)
+    const redirectResponse = NextResponse.redirect(url)
+    
+    // Ensure cookies are passed to the redirect response
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value)
+    })
+    
+    return redirectResponse
   }
 
   return supabaseResponse

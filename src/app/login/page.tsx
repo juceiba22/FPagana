@@ -34,7 +34,8 @@ export default function LoginPage() {
     if (error) {
       setError(error.message);
     } else {
-      router.push("/scripts");
+      router.refresh(); // Valida cookies en el servidor
+      window.location.href = "/scripts"; // Refresco completo del ciclo de vida
     }
   };
 
@@ -77,9 +78,9 @@ export default function LoginPage() {
           <Button 
             onClick={handleLogin}
             disabled={isLoading}
-            className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground text-md shadow-[0_0_15px_-3px_rgba(212,175,55,0.4)]"
+            className={`w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground text-md shadow-[0_0_15px_-3px_rgba(212,175,55,0.4)] transition-all ${isLoading ? 'opacity-70' : ''}`}
           >
-            {isLoading ? "Accediendo..." : "Acceder al Gremio"}
+            {isLoading ? "Invocando acceso..." : "Acceder al Gremio"}
           </Button>
           <div className="text-sm text-center text-muted-foreground font-light">
             ¿Aún no has sido iniciado?{' '}
