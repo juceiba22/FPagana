@@ -2,8 +2,6 @@ TRUNCATE TABLE public.scripts;
 
 ALTER TABLE public.scripts ADD COLUMN IF NOT EXISTS content_body TEXT;
 
-ALTER SEQUENCE scripts_id_seq RESTART WITH 1;
-
 INSERT INTO public.scripts (title, content_url, access_level, duration_text, content_body, created_at) VALUES ('ACTO 1: La verdad y la libertad', '/scripts/acto-1', 'public', '7 min', 'Primer Acto: La verdad y la libertad (7 minutos)
 
 
