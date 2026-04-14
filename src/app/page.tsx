@@ -29,7 +29,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Button size="lg" variant="outline" className="rounded-full px-8 text-md h-12 border-border hover:bg-secondary/10 hover:text-secondary w-full sm:w-auto" asChild>
-                <Link href="#personajes">Quiero saber más</Link>
+                <Link href="https://fiesta-pagana.vercel.app/" target="_blank" rel="noopener noreferrer">Asistir al ritual</Link>
               </Button>
             </div>
           </div>
