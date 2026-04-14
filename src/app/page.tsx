@@ -23,9 +23,11 @@ export default function Home() {
               Un ritual inmersivo que devela una verdad. Adéntrate en las sombras y descubre lo que yace detrás del telón de la realidad.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
-              <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground text-md h-12 w-full sm:w-auto">
-                Descubrir la Verdad
-              </Button>
+              <Link href="/tipo-de-acceso" className="w-full sm:w-auto">
+                <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground text-md h-12 w-full">
+                  Descubrir la Verdad
+                </Button>
+              </Link>
               <Button size="lg" variant="outline" className="rounded-full px-8 text-md h-12 border-border hover:bg-secondary/10 hover:text-secondary w-full sm:w-auto" asChild>
                 <Link href="#personajes">Quiero saber más</Link>
               </Button>
