@@ -83,9 +83,7 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
         }
       )
       .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log('Realtime subscribed to channel:', channelName);
-        }
+        console.log("Estado de suscripción:", status);
       });
 
     return () => {
