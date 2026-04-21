@@ -69,13 +69,13 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
           event: "INSERT",
           schema: "public",
           table: "messages",
-          filter: `channel_id=eq.${channelId}`,
+          filter: 'channel_id=eq.' + String(channelId),
         },
         (payload) => {
           const newMessage = payload.new as Message;
           setMessages((prev) => {
-            // Prevent duplicate message from being added if already present
-            if (prev.some((msg) => msg.id === newMessage.id)) {
+            // Comparación segura convirtiendo IDs a String
+            if (prev.some((msg) => String(msg.id) === String(newMessage.id))) {
               return prev;
             }
             return [...prev, newMessage];
