@@ -19,6 +19,11 @@ export async function Navbar() {
           <Link href="/scripts" className="text-sm font-medium hover:text-primary transition-colors">
             Guiones
           </Link>
+          {user && (
+            <Link href="/staff/chat" className="text-sm font-medium hover:text-primary transition-colors">
+              Chat
+            </Link>
+          )}
           {user ? (
             <form action="/auth/signout" method="post">
               <Button variant="outline" size="sm" type="submit" className="border-border hover:bg-secondary/20 hover:text-secondary">
@@ -40,3 +45,4 @@ export async function Navbar() {
     </nav>
   );
 }
+
