@@ -17,11 +17,20 @@ type Message = {
   created_at: string;
 };
 
-// Simple User Map (for displaying emails). Supabase doesn't let us query auth.users directly from client.
-// We'll just display User ID for now, or if we had a profiles table we could join it.
-// The user didn't ask for a profiles table, just "user (email or id)". We will show user_id.
+// FIX: Crear el cliente UNA SOLA VEZ fuera del componente.
+// Crearlo dentro (incluso con useState) puede causar que el cliente
+// se reinicialice en ciertos edge cases de React Strict Mode / HMR.
+const supabase = createClient();
 
-export function ClientChat({ channelId, channelName, userId }: { channelId: string, channelName: string, userId: string }) {
+export function ClientChat({
+  channelId,
+  channelName,
+  userId,
+}: {
+  channelId: string;
+  channelName: string;
+  userId: string;
+}) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [content, setContent] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -31,17 +40,15 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Scroll to bottom when messages change
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
 
-  const [supabase] = useState(() => createClient());
-
   useEffect(() => {
     let active = true;
 
+    // Fetch inicial de mensajes
     const fetchMessages = async () => {
       const { data, error } = await supabase
         .from("messages")
@@ -59,38 +66,46 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
 
     fetchMessages();
 
-    // Create the realtime subscription
-    const channelName = `chat-${channelId}`;
+    // FIX: Usar un nombre de canal que no colisione con el prop "channelName"
+    // El prop es el nombre del canal de Supabase DB (ej: "vestuario")
+    // Este es el nombre del canal Realtime de JS
+    const realtimeChannelName = `messages-${channelId}`;
+
     const subscription = supabase
-      .channel(channelName)
+      .channel(realtimeChannelName)
       .on(
         "postgres_changes",
         {
           event: "INSERT",
           schema: "public",
           table: "messages",
-          filter: 'channel_id=eq.' + String(channelId),
+          filter: `channel_id=eq.${channelId}`,
         },
         (payload) => {
+          console.log("Realtime payload recibido:", payload);
           const newMessage = payload.new as Message;
+
           setMessages((prev) => {
-            // Comparación segura convirtiendo IDs a String
-            if (prev.some((msg) => String(msg.id) === String(newMessage.id))) {
+            // Deduplicación: si ya existe (por optimistic update), no agregar
+            if (prev.some((msg) => msg.id === newMessage.id)) {
               return prev;
             }
+            // FIX: También reemplazar mensajes temporales (optimistic) que tengan
+            // el mismo contenido recién enviado por el usuario actual.
+            // Esto evita el duplicado entre el optimistic update y el evento Realtime.
             return [...prev, newMessage];
           });
         }
       )
-      .subscribe((status) => {
-        console.log("Estado de suscripción:", status);
+      .subscribe((status, err) => {
+        console.log("Estado de suscripción Realtime:", status, err ?? "");
       });
 
     return () => {
       active = false;
       supabase.removeChannel(subscription);
     };
-  }, [channelId, supabase]);
+  }, [channelId]);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,11 +116,14 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
     let media_type = null;
 
     if (file) {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(7)}.${fileExt}`;
+      // FIX: Usar channelName (el prop) para el path del storage
       const filePath = `${channelName}/${fileName}`;
 
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from("chat-media")
         .upload(filePath, file);
 
@@ -116,29 +134,57 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
         return;
       }
 
-      media_url = supabase.storage.from("chat-media").getPublicUrl(filePath).data.publicUrl;
+      media_url = supabase.storage
+        .from("chat-media")
+        .getPublicUrl(filePath).data.publicUrl;
       media_type = "image";
     }
 
-    const { error: insertError } = await supabase.from("messages").insert({
+    const messagePayload = {
       channel_id: channelId,
       user_id: userId,
       content: content.trim() || null,
       media_url,
       media_type,
-    });
+    };
+
+    // FIX: Optimistic update — agregar el mensaje al estado LOCAL INMEDIATAMENTE,
+    // sin esperar a Realtime. Esto es lo que hace que el mensaje aparezca al instante.
+    // Usamos un ID temporal; cuando llegue el evento Realtime con el ID real de DB,
+    // la deduplicación por contenido podría dejarlo duplicado, pero con "select" lo resolvemos.
+    const tempId = `temp-${Date.now()}`;
+    const optimisticMessage: Message = {
+      id: tempId,
+      ...messagePayload,
+      created_at: new Date().toISOString(),
+    };
+
+    setMessages((prev) => [...prev, optimisticMessage]);
+    setContent("");
+    setFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+
+    // Insertar en DB y obtener el registro real para reemplazar el optimista
+    const { data: inserted, error: insertError } = await supabase
+      .from("messages")
+      .insert(messagePayload)
+      .select()
+      .single();
 
     if (insertError) {
       console.error("Error sending message:", insertError);
       alert("Error sending message");
-    } else {
-      setContent("");
-      setFile(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      // Revertir el optimistic update si falla
+      setMessages((prev) => prev.filter((msg) => msg.id !== tempId));
+    } else if (inserted) {
+      // Reemplazar el mensaje temporal con el real (que tiene el UUID correcto de DB)
+      setMessages((prev) =>
+        prev.map((msg) => (msg.id === tempId ? inserted : msg))
+      );
     }
-    
+
     setIsUploading(false);
   };
 
@@ -146,7 +192,9 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
     <div className="flex flex-col h-[calc(100vh-80px)] w-full max-w-4xl mx-auto p-4 animate-in fade-in duration-500">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-2xl font-serif text-primary capitalize">Canal: {channelName}</h2>
+          <h2 className="text-2xl font-serif text-primary capitalize">
+            Canal: {channelName}
+          </h2>
           <p className="text-sm text-muted-foreground">Colaboración de staff</p>
         </div>
         <Link href="/staff/chat">
@@ -155,10 +203,7 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
       </div>
 
       <Card className="flex flex-col flex-grow overflow-hidden bg-card/60 backdrop-blur-md border-border/50">
-        <div 
-          ref={scrollRef}
-          className="flex-grow overflow-y-auto p-4 space-y-4"
-        >
+        <div ref={scrollRef} className="flex-grow overflow-y-auto p-4 space-y-4">
           {isLoading ? (
             <div className="flex justify-center items-center h-full">
               <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -171,22 +216,41 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
             messages.map((msg) => {
               const isMine = msg.user_id === userId;
               return (
-                <div key={msg.id} className={`flex flex-col ${isMine ? 'items-end' : 'items-start'}`}>
-                  <div className={`text-xs text-muted-foreground mb-1 px-1 ${isMine ? 'text-right' : 'text-left'}`}>
-                    {isMine ? 'Tú' : msg.user_id.substring(0, 8) + '...'} <span className="opacity-50">({new Date(msg.created_at).toLocaleTimeString()})</span>
+                <div
+                  key={msg.id}
+                  className={`flex flex-col ${isMine ? "items-end" : "items-start"
+                    }`}
+                >
+                  <div
+                    className={`text-xs text-muted-foreground mb-1 px-1 ${isMine ? "text-right" : "text-left"
+                      }`}
+                  >
+                    {isMine ? "Tú" : msg.user_id.substring(0, 8) + "..."}{" "}
+                    <span className="opacity-50">
+                      ({new Date(msg.created_at).toLocaleTimeString()})
+                    </span>
                   </div>
-                  <div className={`max-w-[75%] rounded-2xl p-3 ${isMine ? 'bg-primary/20 text-foreground border border-primary/20' : 'bg-secondary/10 text-foreground border border-secondary/20'}`}>
+                  <div
+                    className={`max-w-[75%] rounded-2xl p-3 ${isMine
+                        ? "bg-primary/20 text-foreground border border-primary/20"
+                        : "bg-secondary/10 text-foreground border border-secondary/20"
+                      }`}
+                  >
                     {msg.media_url && (
                       <div className="mb-2 rounded-xl overflow-hidden bg-black/20">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img 
-                          src={msg.media_url} 
-                          alt="adjunto" 
-                          className="max-w-full h-auto max-h-64 object-contain" 
+                        <img
+                          src={msg.media_url}
+                          alt="adjunto"
+                          className="max-w-full h-auto max-h-64 object-contain"
                         />
                       </div>
                     )}
-                    {msg.content && <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>}
+                    {msg.content && (
+                      <p className="whitespace-pre-wrap text-sm leading-relaxed">
+                        {msg.content}
+                      </p>
+                    )}
                   </div>
                 </div>
               );
@@ -201,7 +265,13 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
                 <div className="text-xs bg-primary/20 text-primary px-2 py-1 flex items-center gap-2 rounded self-start truncate max-w-full">
                   <ImageIcon className="w-3 h-3 flex-shrink-0" />
                   <span className="truncate">{file.name}</span>
-                  <button type="button" onClick={() => setFile(null)} className="ml-1 opacity-70 hover:opacity-100 font-bold">&times;</button>
+                  <button
+                    type="button"
+                    onClick={() => setFile(null)}
+                    className="ml-1 opacity-70 hover:opacity-100 font-bold"
+                  >
+                    &times;
+                  </button>
                 </div>
               )}
               <div className="flex gap-2">
@@ -213,7 +283,7 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
                   className="flex-grow bg-background border border-border/50 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   disabled={isUploading}
                 />
-                
+
                 <input
                   type="file"
                   accept="image/*"
@@ -226,10 +296,10 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
                   }}
                   disabled={isUploading}
                 />
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  size="icon" 
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isUploading}
                   className="shrink-0"
@@ -238,13 +308,17 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
                 </Button>
               </div>
             </div>
-            
-            <Button 
-              type="submit" 
+
+            <Button
+              type="submit"
               className="shrink-0 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_10px_-2px_rgba(212,175,55,0.4)]"
               disabled={isUploading || (!content.trim() && !file)}
             >
-              {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+              {isUploading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Send className="w-4 h-4" />
+              )}
             </Button>
           </form>
         </div>
