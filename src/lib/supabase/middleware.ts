@@ -31,8 +31,8 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Protect the /scripts route
-  if (request.nextUrl.pathname.startsWith('/scripts') && !user) {
+  // Protect the /scripts and /staff routes
+  if ((request.nextUrl.pathname.startsWith('/scripts') || request.nextUrl.pathname.startsWith('/staff')) && !user) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     const redirectResponse = NextResponse.redirect(url)
