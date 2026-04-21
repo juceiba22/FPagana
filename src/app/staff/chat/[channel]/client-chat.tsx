@@ -28,7 +28,6 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const supabase = createClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -37,6 +36,8 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const [supabase] = useState(() => createClient());
 
   useEffect(() => {
     let active = true;
@@ -58,8 +59,10 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
 
     fetchMessages();
 
+    // Create the realtime subscription
+    const channelName = `chat-${channelId}`;
     const subscription = supabase
-      .channel(`staff-chat-${channelId}`)
+      .channel(channelName)
       .on(
         "postgres_changes",
         {
@@ -70,16 +73,26 @@ export function ClientChat({ channelId, channelName, userId }: { channelId: stri
         },
         (payload) => {
           const newMessage = payload.new as Message;
-          setMessages((prev) => [...prev, newMessage]);
+          setMessages((prev) => {
+            // Prevent duplicate message from being added if already present
+            if (prev.some((msg) => msg.id === newMessage.id)) {
+              return prev;
+            }
+            return [...prev, newMessage];
+          });
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log('Realtime subscribed to channel:', channelName);
+        }
+      });
 
     return () => {
       active = false;
       supabase.removeChannel(subscription);
     };
-  }, [channelId]);
+  }, [channelId, supabase]);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
