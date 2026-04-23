@@ -19,6 +19,9 @@ export async function Navbar() {
           <Link href="/scripts" className="text-sm font-medium hover:text-primary transition-colors">
             Guiones
           </Link>
+          <Link href="/comunidad" className="text-sm font-medium hover:text-primary transition-colors">
+            Comunidad
+          </Link>
           {user && (
             <Link href="/staff/chat" className="text-sm font-medium hover:text-primary transition-colors">
               Chat
