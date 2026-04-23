@@ -26,7 +26,7 @@ export default async function ComunidadPage() {
   const getCommentsCount = (videoId: string) => comments?.filter(c => c.video_id === videoId).length || 0;
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background p-4 md:p-6">
       <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>

@@ -99,7 +99,7 @@ export default function SubirVideoPage() {
   if (!userId) return null;
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background p-4 md:p-6">
       <div className="max-w-2xl mx-auto animate-in fade-in duration-500">
         <Link href="/comunidad">
           <Button variant="ghost" className="mb-6 -ml-4 text-muted-foreground hover:text-primary">

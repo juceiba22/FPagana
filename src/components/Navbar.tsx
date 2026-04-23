@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { Button } from '@/components/ui/button';
+import { MobileMenu } from './MobileMenu';
 
 export async function Navbar() {
   const supabase = await createClient();
@@ -12,7 +13,8 @@ export async function Navbar() {
         <Link href="/" className="font-serif text-xl font-bold tracking-widest text-primary">
           PAGANOS
         </Link>
-        <div className="flex items-center space-x-6">
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-6">
           <Link href="/#personajes" className="text-sm font-medium hover:text-primary transition-colors">
             Personajes
           </Link>
@@ -44,6 +46,9 @@ export async function Navbar() {
             </div>
           )}
         </div>
+
+        {/* Mobile Menu */}
+        <MobileMenu user={user} />
       </div>
     </nav>
   );
