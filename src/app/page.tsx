@@ -24,11 +24,11 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
               <Link href="/tipo-de-acceso" className="w-full sm:w-auto">
-                <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground text-md h-12 w-full">
+                <Button size="lg" className="rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground text-md h-12 w-full shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:shadow-[0_0_35px_rgba(212,175,55,0.7)] transition-all duration-300">
                   Descubrir la Verdad
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="rounded-full px-8 text-md h-12 border-border hover:bg-secondary/10 hover:text-secondary w-full sm:w-auto" asChild>
+              <Button size="lg" variant="outline" className="rounded-full px-8 text-md h-12 border-secondary/50 hover:bg-secondary/10 hover:border-secondary text-secondary hover:text-secondary w-full sm:w-auto shadow-[0_0_15px_rgba(139,0,0,0.2)] hover:shadow-[0_0_25px_rgba(139,0,0,0.5)] transition-all duration-300" asChild>
                 <Link href="https://fiesta-pagana.vercel.app/" target="_blank" rel="noopener noreferrer">Asistir al ritual</Link>
               </Button>
             </div>
@@ -55,7 +55,8 @@ export default function Home() {
                 { name: "Materio Primo", role: "El Frenesí Final", desc: "Materio Primo es un personaje sin identidad pero que vive. Él camina por la vida, al ritmo de la música de la banda que muta entré el folclore fusionado intelectual y el folclore furioso que al pueblo le encanta bailar.", icon: "🥁" },
                 { name: "El Pueblo quiere saber", role: "Alma Colectiva", desc: "El espíritu plural donde habitan todos los personajes secundarios que participan subsidiariamente en la obra. Una fuerza anónima y vibrante que respira al unísono y da vida a la celebración en cada compás.", icon: "👥" }
               ].map((char, i) => (
-                <Card key={i} className="group hover:-translate-y-2 transition-all duration-300 bg-background/50 border-border/50 hover:shadow-[0_0_30px_-5px_rgba(212,175,55,0.2)] hover:border-primary/50 flex flex-col">
+                <Card key={i} className="group hover:-translate-y-2 transition-all duration-500 bg-background/60 border-border/40 hover:bg-background/80 shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_40px_rgba(212,175,55,0.25)] hover:border-primary/50 flex flex-col relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                   <CardHeader>
                     <div className="w-14 h-14 rounded-full bg-secondary/10 border border-secondary/20 flex items-center justify-center mb-6 text-2xl group-hover:scale-110 transition-transform">
                       {char.icon}
@@ -97,7 +98,7 @@ export default function Home() {
               </div>
 
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 pt-16 z-20 flex flex-col items-center">
-                <Button size="lg" className="rounded-full h-14 px-8 shadow-[0_0_40px_-5px_rgba(212,175,55,0.4)] group-hover:scale-105 transition-transform" asChild>
+                <Button size="lg" className="rounded-full h-14 px-8 shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:shadow-[0_0_50px_rgba(212,175,55,0.8)] group-hover:scale-105 transition-all duration-300 bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
                   <Link href="/register">
                     Solicitar Acceso <MoveRight className="ml-3 w-5 h-5" />
                   </Link>

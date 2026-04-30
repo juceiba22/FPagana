@@ -59,25 +59,25 @@
 }
 
 .dark {
-  --background: #050505;
-  --foreground: #e5e5e5;
-  --card: #0a0a0a;
-  --card-foreground: #e5e5e5;
-  --popover: #0a0a0a;
-  --popover-foreground: #e5e5e5;
-  --primary: #c5a059;
+  --background: #000000;
+  --foreground: #fdfbf7;
+  --card: #050505;
+  --card-foreground: #fdfbf7;
+  --popover: #050505;
+  --popover-foreground: #fdfbf7;
+  --primary: #ffd700;
   --primary-foreground: #000000;
-  --secondary: #700b1b;
+  --secondary: #8b0000;
   --secondary-foreground: #ffffff;
-  --muted: #171717;
-  --muted-foreground: #a3a3a3;
-  --accent: #171717;
-  --accent-foreground: #c5a059;
-  --destructive: #7f1d1d;
+  --muted: #111111;
+  --muted-foreground: #999999;
+  --accent: #111111;
+  --accent-foreground: #ffd700;
+  --destructive: #aa0000;
   --destructive-foreground: #ffffff;
-  --border: #262626;
-  --input: #262626;
-  --ring: #c5a059;
+  --border: #222222;
+  --input: #222222;
+  --ring: #8b0000;
 }
 
 @layer base {
@@ -96,5 +96,15 @@
   h5,
   h6 {
     @apply font-serif text-primary;
+  }
+
+  .bg-noise {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 }
